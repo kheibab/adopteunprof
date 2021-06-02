@@ -70,7 +70,7 @@
 
 <script>
 import io from "socket.io-client";
-var socket = io.connect("http://89.234.182.164:4000").emit("error");
+var socket = io.connect("ws://localhost:4000");
 export default {
   name: "Chat",
   data: () => ({
@@ -149,14 +149,12 @@ export default {
         message: this.newMessage,
         user: this.username,
       });
-      console.log(this.newMessage);
       this.newMessage = null;
     },
 
     addUser() {
       this.ready = true;
       socket.emit("joined", this.username);
-      console.log(this.username);
     },
   },
 };
