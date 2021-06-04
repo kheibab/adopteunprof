@@ -12,12 +12,12 @@
               width="40"
               height="40"
             />
-            <h4>abc</h4>
-            <span>{{ comments.created_at }}</span>
+            <h4>Ulysse</h4>
+            <!-- <span>{{ comments.created_at }}</span>
             <br />
             <p>
               {{ comments.comment }}
-            </p>
+            </p> -->
           </div>
           <div class="text-justify darker mt-4 float-right">
             <img
@@ -107,7 +107,7 @@ export default {
 
       // prendre le commentaire
       axios
-        .get("http://127.0.0.1:8000/api/comments/1", {
+        .get("http://89.234.182.164:8000/api/comments/1", {
           headers: {
             Authorization: `Basic ${token}`,
           },

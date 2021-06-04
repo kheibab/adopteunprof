@@ -3,10 +3,15 @@
     <header class="page_header">
       <div class="container">
         <div class="align-items-center">
-          <img
-            :src="require('@/assets/logo-adopte-un-prof.png')"
-            class="logo"
-          />
+          <div class="logohead">
+            <router-link :to="`/`">
+              <img
+                :src="require('@/assets/logo-adopte-un-prof.png')"
+                class="logo"
+              />
+            </router-link>
+          </div>
+
           <div class="col-xl-7 d-xl-block">
             <nav class="top-nav justify-content-start" style="">
               <ul
@@ -34,7 +39,9 @@
                   id="menu-item-492"
                   class="menu-item menu-item-type-post_type menu-item-object-page menu-item-492"
                 >
-                  <a href="#">Professeurs</a>
+                  <router-link to="/listeprofs">
+                    <a>Professeurs</a>
+                  </router-link>
                 </li>
                 <!-- <li
                   id="menu-item-413"
@@ -46,15 +53,44 @@
             </nav>
           </div>
           <div class="col-3 col-lg-1 d-none d-xl-flex justify-content-lg-end">
-            <router-link to="/login">
-              <a href="#" class="login_modal_window modal_window">
-                <i class="bi bi-person-fill"></i>Login</a
+            <div v-if="login">
+              <router-link to="/personalspace/user">
+                <a href="#" class="login_modal_window modal_window"
+                  ><i class="bi bi-person-circle"></i> Espace Perso
+                </a>
+              </router-link>
+              <a
+                v-on:click="logout"
+                href="#"
+                class="login_modal_window modal_window"
+                ><i class="bi bi-box-arrow-left"></i> Logout</a
               >
+            </div>
+            <div v-else>
+              <router-link to="/login">
+                <a href="#" class="login_modal_window modal_window"
+                  ><i class="bi bi-person-fill"></i> Login</a
+                >
+              </router-link>
+
+              <router-link to="/register">
+                <a href="#" class="login_modal_window modal_window"
+                  ><i class="bi bi-box-arrow-in-right"></i> Register</a
+                >
+              </router-link>
+            </div>
+
+            <!--<router-link to="/login">
+              <a href="#" class="login_modal_window modal_window"> Login</a>
             </router-link>
 
             <router-link to="/register">
+              <a href="#" class="login_modal_window modal_window"> Register</a>
+            </router-link>
+
+            <router-link to="/personalspace/user">
               <a href="#" class="login_modal_window modal_window">
-                <i class="bi bi-person-fill"></i>Register</a
+                Espace Perso</a
               >
             </router-link>
 
@@ -63,8 +99,8 @@
               href="#"
               class="login_modal_window modal_window"
             >
-              <i class="bi bi-person-fill"></i>Logout</a
-            >
+              Logout</a
+            >-->
           </div>
         </div>
       </div>
@@ -73,7 +109,27 @@
 </template>
 
 <script>
+import { defineComponent, computed, watch } from "vue";
 export default {
+  data() {
+    return {
+      login: "",
+    };
+  },
+  created() {
+    this.login = this.$cookies.get("authtoken");
+    console.log("HEY LOGIN");
+    console.log(this.login);
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      console.log(from);
+      if (from.name == "Login" && to.name == "Profile") {
+        this.login = this.$cookies.get("authtoken");
+      }
+    },
+  },
   methods: {
     logout() {
       localStorage.clear();
@@ -84,9 +140,25 @@ export default {
       this.$cookies.remove("FBid");
       this.$cookies.remove("FBname");
       this.$cookies.remove("studentID");
+      this.$cookies.remove("admintoken");
+      this.login = "";
       console.log("LOGGED OUT");
       // this.logouterrormessage = "You're logged out !";
       this.$router.push({ path: "/" });
+    },
+  },
+  created() {
+    this.login = this.$cookies.get("authtoken");
+    console.log("HEY LOGIN");
+    console.log(this.login);
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      console.log(from);
+      if (from.name == "Login" && to.name == "Profile") {
+        this.login = this.$cookies.get("authtoken");
+      }
     },
   },
 };
@@ -111,7 +183,8 @@ export default {
 .align-items-center {
   align-items: center !important;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   margin-right: -15px;
   margin-left: -15px;
   box-sizing: border-box;
@@ -120,12 +193,10 @@ export default {
 
 .logo {
   flex: 0 0 20%;
-  max-width: 20%;
-  position: relative;
+  max-width: 100%;
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
-  display: inline-block;
   height: auto;
   margin-top: -10px;
 }
@@ -209,7 +280,7 @@ li > a:hover {
 
 .col-3 {
   position: relative;
-  width: 100%;
+  margin-left: 100px;
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
@@ -229,21 +300,11 @@ li > a:hover {
   text-decoration: none;
   transition: all 300ms ease-out;
 }
+.login_modal_window:hover {
+  color: #5caf01;
+}
 
 a {
   text-decoration: none;
-}
-
-.bi-person-fill {
-  margin-right: 0.5rem !important;
-  font-size: inherit;
-  text-rendering: auto;
-  color: #ffffff;
-  transition: all 300ms ease-out;
-}
-
-.login_modal_window:hover,
-.bi-person-fill:hover {
-  color: #5caf01;
 }
 </style>

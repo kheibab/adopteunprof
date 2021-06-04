@@ -35,7 +35,7 @@ export default {
     return {
       email: "",
       pwd: "",
-      loginerrormessage: "",
+      loginerrormessage: this.$route.params.loginerrormessage,
     };
   },
 
@@ -43,7 +43,7 @@ export default {
     loginUser() {
       if (![this.email, this.pwd].every(Boolean)) {
         console.log("NULL");
-        this.loginerrormessage = "Tous les champs sont requis !";
+        this.loginerrormessage = "Tous les champs sont requis.";
       } else {
         console.log("ATTEMPT TO LOGIN USER");
 
@@ -67,10 +67,19 @@ export default {
             this.$cookies.set("authtoken", token);
             console.log(this.$cookies.get("authtoken"));
 
+            // ADMIN :
+            if (response.data.user.name == "admin") {
+              this.$cookies.set("admintoken", response.data.user.name);
+              console.log(this.$cookies.get("admintoken"));
+            } else {
+              console.log("PAS ADMIN");
+            }
+
             this.$router.push({ path: "/profile" });
           })
           .catch((error) => {
             console.log(error);
+            this.loginerrormessage = "Informations incorrectes.";
           });
       }
     },

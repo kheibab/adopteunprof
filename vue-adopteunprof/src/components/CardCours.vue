@@ -26,29 +26,36 @@
                 <a>Professeur</a>
               </div>
               <div class="button">
-                <button type="button" class="btn">
+                <button
+                  v-on:click="Profil(annonces.professorID)"
+                  type="button"
+                  class="btn"
+                >
                   <!--{{ professors.firstname }} {{ professors.lastname }}-->
-                  {{ annonces.professorID }}
+                  {{ annonces.professor_name }}
                 </button>
+                <router-link to="/chat" class="btn-chat">
+                  <i class="bi bi-chat-dots"></i>
+                  <i class="bi bi-chat-dots-fill"></i>
+                </router-link>
               </div>
               <br />
               <div class="matière">
                 <a>Matière</a>
               </div>
               <div class="button">
-                <button type="button" class="btn">
-                  {{ annonces.matières }}
-                </button>
+                <p type="text" class="bt">
+                  {{ annonces.matieres }}
+                </p>
               </div>
               <br />
               <div class="bloc-price">
                 <div class="price">{{ annonces.tarifs }} €</div>
-                <button type="button-reserver" class="btn-reserver">
-                  Réserver
-                </button>
-                <button type="button-chat" class="btn-chat">
-                  <router-link to="/chat"> Discuter </router-link>
-                </button>
+                <router-link :to="`/paypal?id=${annonces.id}`">
+                  <button type="button-reserver" class="btn-reserver">
+                    Réserver
+                  </button></router-link
+                >
               </div>
             </div>
           </div>
@@ -67,7 +74,16 @@ export default {
   },
 
   components: {},
-  methods: {},
+  methods: {
+    Profil(profid) {
+      console.log(profid);
+      //ROUTING AVEC PARAMS
+      this.$router.push({ name: "ProfProfil", params: { profID: profid } });
+    },
+    showannonces(id) {
+      this.$router.push(`/paypal?id=${id}`);
+    },
+  },
 };
 </script>
 
@@ -205,34 +221,26 @@ h6 {
   position: absolute;
   transition: all 300ms ease-out;
   margin-left: 150px;
-  margin-top: -80px;
-}
-
-.btn-chat {
-  background-color: #5caf01;
-  border: 2px solid #5caf01;
-  color: white;
-  padding: 10px 30px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  position: absolute;
-  transition: all 300ms ease-out;
-  margin-left: 150px;
-  margin-top: -30px;
-}
-
-.btn-chat:hover {
-  background-color: transparent;
-  border: 2px solid #5caf01;
-  color: black;
+  margin-top: -35px;
 }
 .btn-reserver:hover {
   background-color: transparent;
   border: 2px solid #5caf01;
   color: black;
+}
+.btn-chat {
+  color: #5caf01;
+  font-size: 25px;
+  margin-left: 10px;
+  margin-top: -30px;
+  float: left;
+}
+
+.btn-chat:hover .bi-chat-dots,
+.btn-chat .bi-chat-dots-fill {
+  display: none;
+}
+.btn-chat:hover .bi-chat-dots-fill {
+  display: inline;
 }
 </style>

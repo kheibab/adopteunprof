@@ -105,10 +105,23 @@ export default {
       hobby: "",
       description: "",
       age: "",
-      profileerrormessage: "",
+      profileerrormessage: this.$route.params.profileerrormessage,
       profiltype: "",
       itstudent: false,
     };
+  },
+  created() {
+    if (this.$cookies.get("authtoken") == undefined) {
+      this.$router.push({
+        name: "Login",
+        params: {
+          loginerrormessage:
+            "Pour vous créer un profil Professeur ou Elève merci de vous connecter au préalable.",
+        },
+      });
+    } else {
+      console.log("AUTHENTICATED");
+    }
   },
   methods: {
     whoisit() {
@@ -295,11 +308,11 @@ input::placeholder {
   padding-left: 50px;
 }
 .choice1 {
-  width: 0;
+  width: 15px;
   margin-top: -40px;
 }
 .choice2 {
-  width: 0;
+  width: 15px;
   margin-top: -40px;
 }
 label {
